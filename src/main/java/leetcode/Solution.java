@@ -780,12 +780,113 @@ public class Solution {
         return true;
     }
 
+    /**
+     * 合并两个有序的数组
+     * @param A
+     * @param m
+     * @param B
+     * @param n
+     */
+    public static void merge(int A[], int m, int B[], int n) {
+        int i = m-1;
+        int j = n-1;
+        int index = m+n-1;
+        while(i>=0 && j>=0){
+            A[index--] = A[i] > B[j] ? A[i--] : B[j--];
+        }
+        while(j>=0){
+            A[index--] = B[j--];
+        }
+    }
+
+    public ListNode detectCycle(ListNode head) {
+        HashSet<ListNode> listNodes = new HashSet<>();
+        while(head != null){
+            if(listNodes.contains(head)){
+                return head;
+            }
+            listNodes.add(head);
+            head = head.next;
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param s string字符串
+     * @return bool布尔型
+     */
+    public boolean isValid (String s) {
+        // write code here
+        Stack<Character> queue = new Stack<>();
+        for(int i =0;i<s.length();i++){
+            char c = s.charAt(i);
+            if( c == '(' || c == '{' || c =='['){
+                queue.push(c);
+            }else {
+                if(queue.isEmpty()){
+                    return false;
+                }
+                switch (c){
+                    case ')':{
+                        if(queue.peek() == '('){
+                            queue.pop();
+                        }
+                        break;
+                    }
+                    case ']':{
+                        if(queue.peek() == '['){
+                            queue.pop();
+                        }
+                        break;
+                    }
+                    case '}':{
+                        if(queue.peek() == '{'){
+                            queue.pop();
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        return queue.isEmpty();
+
+    }
+
+    /**
+     *
+     * @param head ListNode类
+     * @param n int整型
+     * @return ListNode类
+     * 两个指针相邻n，先记录链表的头
+     */
+    public ListNode removeNthFromEnd (ListNode head, int n) {
+        // write code here
+        if(head == null){
+            return null;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
+        for(int i=0;i<n;i++){
+            fast = fast.next;
+        }
+        if(fast == null){
+            return head.next;
+        }
+        while(fast.next != null){
+            slow = slow.next;
+            fast = fast.next;
+        }
+        slow.next = slow.next.next;
+        return head;
+
+    }
     public static void main(String[] args) {
         StringBuffer stringBuffer = new StringBuffer("A");
-        int[] a = {0,4,3,2,0};
-        int[] b = {2,4};
+        int[] a = {};
+        int[] b = {1};
         int[][] c = {{1,1,1},{1,2,2},{1,3,2},{2,1},{1,4,4},{2,2}};
-        Solution.twoSum(a,0);
+        Solution.merge(a,0,b,1);
     }
 
 
